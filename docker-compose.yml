@@ -1,0 +1,20 @@
+version: '2'
+services: 
+  couchdb.local:
+    image: dmunch/couchdb-dreyfus:2.0-ba1e99e
+    volumes:
+      - ./data:/opt/couchdb/data
+    ports:
+      - "5984:5984"
+    environment: 
+      - ERL_NAME=couchdb@couchdb.local
+      - ERL_COOKIE=monster
+      - CLOUSEAU_NAME=clouseau@clouseau.local
+  clouseau.local:
+    image: dmunch/clouseau:2.10.0-SNAPSHOT-java8
+    depends_on:
+      - couchdb.local
+    environment: 
+      - ERL_NAME=clouseau@clouseau.local
+      - ERL_COOKIE=monster
+      - INDEX_DIR=/index
